@@ -150,6 +150,10 @@ class App extends Component {
 
                     </CardList3>
 
+
+                    {/*Monster APP*/}
+                    <h1> Monsters Rolodex </h1>
+
                     {/*Input element for the search field with a onChange function*/}
                     {/*<input type={`search`} placeholder={`Search for monster`} onChange={event => {*/}
 
