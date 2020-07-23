@@ -253,6 +253,74 @@ const newCustomArray12 = customArray1.filter((currentElement) => currentElement 
 console.log(newCustomArray12);
 console.log('--------');
 
+
+/**
+ *
+ * Include()
+ *
+ */
+
+//We check to se if a element is included in an array
+const defaultArray = [1, 2, 3, 4, 5];
+console.log('Is 3 in the array: ' + defaultArray.includes(3));
+console.log('Is 6 in the array: ' + defaultArray.includes(6));
+console.log('Is 3 in the array from index 2: ' + defaultArray.includes(3, 2));
+console.log('Is 3 in the array from index 3: ' + defaultArray.includes(3, 3));
+//Searching the whole element in the array
+const defaultArray1 = ['Arik', 'Hans'];
+console.log('Is "ri" in the array: ' + defaultArray1.includes('ri'));
+console.log('Is "Arik" in the array: ' + defaultArray1.includes('Arik'));
+//Searching fragments of the array element
+const mapArray = defaultArray1.map(currentElement => {
+    console.log(currentElement + ' incl. "ri": ' + currentElement.includes('ri'));
+})
+console.log(mapArray);
+//Searching objects
+const defaultArray2 = [{id: 1}, {id: 3}];
+console.log('{id: 1} is in the array: ' + defaultArray2.includes({id: 1})); //False because we can't search objects this way
+const object1 = {id: 1};
+const object2 = {id: 2};
+const defaultArray3 = [object1, object2];
+console.log('Object 2 is in the array: ' + defaultArray3.includes(object2)); //This is the way we search objects -> result is true
+
+
+/**
+ *
+ * Find()
+ *
+ */
+
+const findArray = [1, 2, 3, 4, 5];
+
+//Result returns true/false depending on the result
+//We want to see if an element is equal to 3. The Array gives us ONLY the first value that is true, so it stops at 3!!!
+const result1 = findArray.find(currentElement => currentElement === 3);
+console.log('Find result: ' + result1); //3
+const result2 = findArray.find(currentElement => currentElement > 2);
+console.log('Find result: ' + result2); //3
+//We can find objects
+const findPeople = [{id: 1, name: 'Hans'}, {id: 4, name: 'Arik'}, {id: 7, name: 'Peter'}];
+const result3 = findPeople.find(currentElement => currentElement.id === 4);
+console.log(result3);
+console.log('Object id: ' + result3.id + ', and object name: ' + result3.name);
+
+
+/**
+ *
+ * Reduce()
+ *
+ */
+
+//We use reduce when we want ONE value at the end, and we want to add the values in an array together
+const reduceArray = [1, 2, 3, 4, 5];
+//The accumulator is the sum of the values in the array. The 0 is the accumulator start value
+const result4 = reduceArray.reduce((accumulator, currentElement) => accumulator + currentElement, 0);
+console.log('Reduce result with start accumulator value at 0: ' + result4) //15
+const result5 = reduceArray.reduce((accumulator, currentElement) => accumulator + currentElement, 2);
+console.log('Reduce result with start accumulator value at 2: ' + result5); //12
+
+
+
 /**
  *
  * Promise
@@ -312,32 +380,119 @@ fetch('htt://jsonplaceholder.typicode.com/ERROR').then(response => response.json
 
 /**
  *
- * Include()
+ * Async Await
  *
  */
 
-//We check to se if a element is included in an array
-const defaultArray = [1, 2, 3, 4, 5];
-console.log('Is 3 in the array: ' + defaultArray.includes(3));
-console.log('Is 6 in the array: ' + defaultArray.includes(6));
-console.log('Is 3 in the array from index 2: ' + defaultArray.includes(3, 2));
-console.log('Is 3 in the array from index 3: ' + defaultArray.includes(3, 3));
-//Searching the whole element in the array
-const defaultArray1 = ['Arik', 'Hans'];
-console.log('Is "ri" in the array: ' + defaultArray1.includes('ri'));
-console.log('Is "Arik" in the array: ' + defaultArray1.includes('Arik'));
-//Searching fragments of the array element
-const mapArray = defaultArray1.map(currentElement => {
-    console.log(currentElement + ' incl. "ri": ' + currentElement.includes('ri'));
-})
-console.log(mapArray);
-//Searching objects
-const defaultArray2 = [{id: 1}, {id: 3}];
-console.log('{id: 1} is in the array: ' + defaultArray2.includes({id: 1})); //False because we can't search objects this way
-const object1 = {id: 1};
-const object2 = {id: 2};
-const defaultArray3 = [object1, object2];
-console.log('Object 2 is in the array: ' + defaultArray3.includes(object2)); //This is the way we search objects -> result is true
+//We make a API request, and stack .then() promises to is. This is NOT a Async function
+fetch('https://jsonplaceholder.typicode.com/users')
+    //We get a response from the API
+    .then(response => response.json())
+    //The response gives us back users => response = users
+    .then(users => {
+        console.log('------ NOT Async Await ------');
+        console.log(users);
+        const firstUser = users[0];
+        console.log(firstUser);
+        return fetch('https://jsonplaceholder.typicode.com/posts?userId=' + firstUser.id);
+    })
+    //We get a new response from the API
+    .then(response => response.json())
+    //We get a response from the API => response = posts
+    .then(posts => console.log(posts))
+    //We make a catch statement to catch ALL the error response
+    .catch(error => console.log(error));
+
+//This is how we convert the fetch() to Async function
+const myAsyncFunction = async () => {
+    //We make a try/catch for our await function
+    try{
+        console.log('------ Async Await!! ------');
+        //We await a response from the fetch() and cast it to a const
+        const myUserResponse = await fetch('https://jsonplaceholder.typicode.com/users');
+        //We convert to JSON, but this "operation" cant start before fetch() is done. We also make JSON an await for the next operation
+        const users = await myUserResponse.json();
+        const secondUser = users[1];
+        console.log(secondUser);
+        //We make an await again for the fetch() response
+        const postResponse = await fetch('https://jsonplaceholder.typicode.com/posts?userId=' + secondUser.id);
+        //We convert to JSON, but this "operation" cant start before fetch() is done. We also make JSON an await for the next operation
+        const posts = await postResponse.json();
+        console.log(posts);
+    } catch (error) {
+        console.log(error);
+    }
+};
+//We call the Async function
+myAsyncFunction();
+
+
+
+/**
+ *
+ * Memoization is a form of caching
+ *
+ */
+
+//We make a simple function that doesn't remember the previous value
+function addTo80(number) {
+    return number + 80;
+}
+console.log(addTo80(5)); //85
+console.log(addTo80(5)); //85
+
+//We make a cache to store earlier calculations
+let cache = {};
+function memoizedAddTo80(number) {
+
+    //If the operation takes long time, the number is stored in the cache
+    if(number in cache){
+        return cache[number];
+    } else {
+        //What happens the first time, when there is no number in the cache
+        console.log('Long time');
+        cache[number] = number + 180;
+        return cache[number];
+    }
+}
+console.log(memoizedAddTo80(5)); //185 + Long time (New calculation that is not in the cache)
+console.log(memoizedAddTo80(5)); //185 (because it knows how to calculate 180 + 5, and it's in the cache)
+console.log(memoizedAddTo80(5)); //185 (because it knows how to calculate 180 + 5, and it's in the cache)
+console.log(memoizedAddTo80(7)); //187 + Long time (New calculation that is not in the cache)
+console.log(memoizedAddTo80(7)); //187 (because it knows how to calculate 180 + 7, and it's in the cache)
+console.log(memoizedAddTo80(5)); //185 (because it knows how to calculate 180 + 5, and it's in the cache)
+
+
+/**
+ *
+ * Currying
+ *
+ */
+
+//We change a function from taking multiple parameters, to taking one at a time = currying
+//No currying:
+const multiply = (a, b) => a * b;
+console.log('Multiply: ' + multiply(2, 6)); //12
+//Currying
+const curryingMulti = (a) => (b) => a * b;
+//Each element is being called in a ()
+console.log('Multiply with currying: ' + curryingMulti(6)(6)); //36
+const curryingMulti1 = (a) => (b) => (c) => a * b + c;
+//Each element is being called in a ()
+console.log('Multiply with currying: ' + curryingMulti1(6)(6)(10)); //46
+
+//We can store a part of the currying and use later
+const curryingMulti2 = (a) => (b) => a + b;
+//We have to call a first. We cant store b and leave a blank!!!
+const storesFirstPartOfCurrying = curryingMulti2(160);
+//We can now use the stores curry value and finish the function.
+console.log('Finish the curry function that has a = 160, and b = 70: ' + storesFirstPartOfCurrying(70)); //230
+
+
+
+
+
+
 
 
 
