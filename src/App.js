@@ -489,7 +489,30 @@ const storesFirstPartOfCurrying = curryingMulti2(160);
 console.log('Finish the curry function that has a = 160, and b = 70: ' + storesFirstPartOfCurrying(70)); //230
 
 
+/**
+ *
+ * Update React
+ *
+ */
 
+//1. Got to the folder in the Terminal and write: npm list react react-dom react-scripts
+
+//2. Add a tilda(^) to the dependencies you want to update to latest version
+//In the JSON file, we can add "^" in front of the version we want to auto update.
+//The "^" will make sure, that we dont get a smaller version, and we will always update to highest stable version
+
+//3. updated the dependencies by writing: npm update
+//npm will update all packages even without tilda(^), but tilda(^) makes sure we npm doesnt skip updates by mistake
+
+
+/**
+ *
+ * Fixing vulnerabilities
+ *
+ */
+
+//If an update or install gives a vulnerability, the write: npm audit fix
+//This will make npm find later versions without vulnerabilities that are compatible with all packages
 
 
 
