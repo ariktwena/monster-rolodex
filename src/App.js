@@ -8,6 +8,8 @@ import { CardList1, CardList2, CardList3, CardList } from "./components/card-lis
 //Import search field
 import { SearchBox } from "./components/search-box/search-box.component";
 
+import MeaningOfLife from "./components/meaning/meaning.component";
+
 //Class gives us access to the "state"
 class App extends Component {
 
@@ -172,6 +174,13 @@ class App extends Component {
                     {/*we display monsters based on the search field and not the state*/}
                     {/*<CardList monstersFromAPI={this.state.monstersFromAPI}/>*/}
                     <CardList monstersFromAPI={filterMonsters}/>
+
+
+                    {<br/>}
+                    {<br/>}
+                    {<br/>}
+
+                    <MeaningOfLife increment={1}/>
 
                 </div>
             </div>
