@@ -320,7 +320,7 @@ console.log('Object id: ' + result3.id + ', and object name: ' + result3.name);
  *
  */
 
-//We use reduce when we want ONE value at the end, and we want to add the values in an array together
+//We use reduce when we want ONE value/sum at the end, and we want to add the values in an array together
 const reduceArray = [1, 2, 3, 4, 5];
 //The accumulator is the sum of the values in the array. The 0 is the accumulator start value
 const result4 = reduceArray.reduce((accumulator, currentElement) => accumulator + currentElement, 0);
@@ -470,6 +470,27 @@ console.log(memoizedAddTo80(5)); //185 (because it knows how to calculate 180 + 
 console.log(memoizedAddTo80(7)); //187 + Long time (New calculation that is not in the cache)
 console.log(memoizedAddTo80(7)); //187 (because it knows how to calculate 180 + 7, and it's in the cache)
 console.log(memoizedAddTo80(5)); //185 (because it knows how to calculate 180 + 5, and it's in the cache)
+
+
+/**
+ *
+ * Local storage and session storage
+ * Session: is stored as long as the tab is open or refreshed
+ * Local: is saved on the machine and is always available until we clear it
+ * Both ONLY store strings
+ *
+ */
+
+const myObjectToSave = {name: 'Arik'};
+//We set a key and value
+window.localStorage('mySavedFile', JSON.stringify(myObjectToSave));
+//To retrieve the value via the key
+const myRetrievedObjectAsString = window.localStorage.getItem('mySavedFile');
+console.log(myRetrievedObjectAsString); //Just a string now
+//Convert to object again
+const myRetrievedObject = JSON.parse(myRetrievedObjectAsString);
+console.log(myRetrievedObject); //Object again
+
 
 
 /**
